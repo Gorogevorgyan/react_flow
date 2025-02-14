@@ -72,7 +72,7 @@ const WorkflowDetails = ({workflowId}) => {
             const updatedData = {...data, connections: data.connections.split(',')}
             await updateNode(workflowId, id, updatedData)
         } else {
-            if(data.position_x && data.position_y){
+            if(data.position_x.toString() && data.position_y.toString()){
                 const newData = {...data, connections: data.connections.split(',')}
                 await addNode(workflowId, newData)
             }else{
@@ -152,7 +152,7 @@ const WorkflowDetails = ({workflowId}) => {
                 <Controls/>
                 <Background variant="dots" gap={12} size={1}/>
             </ReactFlow>}
-            {!nodes.length && <Typography>No nodes available</Typography>}
+            {!nodes.length && <Typography sx={{position: 'absolute', top: '50%', left: '50%'}}>No nodes available</Typography>}
         </Box>
     );
 }
