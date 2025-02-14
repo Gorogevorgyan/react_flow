@@ -81,7 +81,6 @@ export default function BasicTable() {
                 {isSnackBarOpen &&
                     <Snackbar
                         open={true}
-                        autoHideDuration={2000}
                     >
                         <Alert
                             onClose={() => setIsSnackBarOpen(false)}

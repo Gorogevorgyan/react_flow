@@ -51,8 +51,8 @@ const WorkflowDetails = ({workflowId}) => {
     const onNodeDragStop = async (event, node) => {
         await updateNode(workflowId, node.id, {
             ...node.initialData,
-            position_x: node.position.x,
-            position_y: node.position.y
+            position_x: node.position.x.toFixed(0),
+            position_y: node.position.y.toFixed(0)
         })
     };
 
@@ -72,11 +72,12 @@ const WorkflowDetails = ({workflowId}) => {
             const updatedData = {...data, connections: data.connections.split(',')}
             await updateNode(workflowId, id, updatedData)
         } else {
-            if(!isNaN(data.position_x) && !isNaN(data.position_Y)){
+            if(data.position_x && data.position_y){
                 const newData = {...data, connections: data.connections.split(',')}
                 await addNode(workflowId, newData)
+            }else{
+                setIsSnackBarOpen(true)
             }
-           setIsSnackBarOpen(true)
         }
         setCurrentNode(null)
         setIsModalOpen(false)
@@ -105,7 +106,6 @@ const WorkflowDetails = ({workflowId}) => {
             {isSnackBarOpen &&
                 <Snackbar
                     open={true}
-                    autoHideDuration={2000}
                 >
                     <Alert
                         onClose={() => setIsSnackBarOpen(false)}
