@@ -17,6 +17,7 @@ import useWorkflowStore from '../stores/workflowStore';
 import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import BasicModal from "./Modal";
 import {useNavigate} from "react-router-dom";
 
@@ -55,6 +56,14 @@ export default function BasicTable() {
             return
         }
         deleteWorkflow(workflow.id)
+    }
+    const handleExport = async (workflow) => {
+        const jsonString = JSON.stringify(workflow, null, 2);
+        const blob = new Blob([jsonString], { type: "application/json" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "data.json";
+        link.click();
     }
 
     return (
@@ -111,6 +120,8 @@ export default function BasicTable() {
                                     <ClearIcon onClick={() => handleRemove(row)}
                                                sx={{height: 20, width: 20, color: 'red', cursor: 'pointer'}}/>
                                     <VisibilityIcon onClick={() => navigate(`/workflows/${row.id}`)}
+                                                    sx={{height: 20, width: 20, color: 'white', cursor: 'pointer'}}/>
+                                    <ArrowRightAltIcon onClick={() => handleExport(row)}
                                                     sx={{height: 20, width: 20, color: 'white', cursor: 'pointer'}}/>
                                 </TableCell>
                             </TableRow>))}
