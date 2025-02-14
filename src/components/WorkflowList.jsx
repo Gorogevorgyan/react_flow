@@ -115,14 +115,14 @@ export default function BasicTable() {
                                 </TableCell>
                                 <TableCell align='center' component="th" scope="row"
                                            sx={{display: 'flex', gap: '10px', justifyContent: 'center'}}>
-                                    <EditIcon onClick={() => handleEditWorkflow(row)}
+                                    <EditIcon titleAccess="Edit" onClick={() => handleEditWorkflow(row)}
                                               sx={{height: 20, width: 20, color: 'green', cursor: 'pointer'}}/>
-                                    <ClearIcon onClick={() => handleRemove(row)}
+                                    <ClearIcon titleAccess="Remove" onClick={() => handleRemove(row)}
                                                sx={{height: 20, width: 20, color: 'red', cursor: 'pointer'}}/>
-                                    <VisibilityIcon onClick={() => navigate(`/workflows/${row.id}`)}
+                                    <VisibilityIcon titleAccess="View" onClick={() => navigate(`/workflows/${row.id}`)}
                                                     sx={{height: 20, width: 20, color: 'white', cursor: 'pointer'}}/>
-                                    <ArrowRightAltIcon onClick={() => handleExport(row)}
-                                                    sx={{height: 20, width: 20, color: 'white', cursor: 'pointer'}}/>
+                                    <ArrowRightAltIcon titleAccess="export data" onClick={() => handleExport(row)}
+                                                       sx={{height: 20, width: 20, color: 'white', cursor: 'pointer'}}/>
                                 </TableCell>
                             </TableRow>))}
                         </TableBody>
