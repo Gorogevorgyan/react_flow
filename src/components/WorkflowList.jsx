@@ -31,7 +31,8 @@ export default function BasicTable() {
         fetchWorkflows();
     }, [fetchWorkflows]);
     const handleEditWorkflow = (workflow) => {
-        setCurrentWorkflow({name: workflow.name, description: workflow.description})
+        const {nodes, user, ...rest} = workflow
+        setCurrentWorkflow(rest)
         setIsModalOpen(true)
     }
 
@@ -80,7 +81,7 @@ export default function BasicTable() {
                 {isSnackBarOpen &&
                     <Snackbar
                         open={true}
-                        autoHideDuration={6000}
+                        autoHideDuration={2000}
                     >
                         <Alert
                             onClose={() => setIsSnackBarOpen(false)}

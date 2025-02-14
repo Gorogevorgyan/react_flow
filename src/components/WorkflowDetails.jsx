@@ -4,7 +4,7 @@ import {
     Controls,
     Background, useNodesState, useEdgesState, addEdge
 } from '@xyflow/react';
-import {Box, Typography, Button} from '@mui/material'
+import {Box, Typography, Button, Snackbar, Alert} from '@mui/material'
 import '@xyflow/react/dist/style.css';
 import useNodeStore from "../stores/nodeStore";
 import BasicModal from "./Modal";
@@ -13,6 +13,8 @@ import {useNavigate} from "react-router-dom";
 const WorkflowDetails = ({workflowId}) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [currentNode, setCurrentNode] = useState(null)
+    const [isSnackBarOpen, setIsSnackBarOpen] = useState(false)
+
     const navigate = useNavigate()
     const {nodes: myNodes, fetchNodes, addNode, updateNode, deleteNode} = useNodeStore();
     const newNodes = useMemo(() => {
@@ -27,7 +29,7 @@ const WorkflowDetails = ({workflowId}) => {
     }, [myNodes])
     const initialEdges = useMemo(() => {
         const connections = []
-        myNodes?.map((node, index) => {
+        myNodes?.map((node) => {
             node.connections?.map((connection) => {
                 connections.push({
                     id: 'e' + node.id.toString() + connection.toString(),
@@ -70,8 +72,11 @@ const WorkflowDetails = ({workflowId}) => {
             const updatedData = {...data, connections: data.connections.split(',')}
             await updateNode(workflowId, id, updatedData)
         } else {
-            const newData = {...data, connections: data.connections.split(',')}
-            await addNode(workflowId, newData)
+            if(!isNaN(data.position_x) && !isNaN(data.position_Y)){
+                const newData = {...data, connections: data.connections.split(',')}
+                await addNode(workflowId, newData)
+            }
+           setIsSnackBarOpen(true)
         }
         setCurrentNode(null)
         setIsModalOpen(false)
@@ -97,6 +102,21 @@ const WorkflowDetails = ({workflowId}) => {
     }, [newNodes, initialEdges, setEdges, setNodes]);
     return (
         <Box sx={{width: '100vw', height: '100vh'}}>
+            {isSnackBarOpen &&
+                <Snackbar
+                    open={true}
+                    autoHideDuration={2000}
+                >
+                    <Alert
+                        onClose={() => setIsSnackBarOpen(false)}
+                        severity="error"
+                        variant="filled"
+                        sx={{width: '100%'}}
+                    >
+                       Unable to create Node, missing required fields position_x or position_y
+                    </Alert>
+                </Snackbar>
+            }
             <Box sx={{display: 'flex', gap: 2, position: 'absolute', top: 10, right: 10, zIndex: 1000}}>
                 <Button onClick={() => {
                     setCurrentNode({
